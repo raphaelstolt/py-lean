@@ -23,6 +23,7 @@ jobs:
         with:
           enable-cache: true
       - run: uv sync --frozen
+      - run: uv run py-lean lint
       - run: uv run ruff check .
       - run: uv run ruff format --check .
 
