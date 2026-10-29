@@ -99,7 +99,6 @@ class TestLeanConfig:
         assert effective == ["tests", "docs"]
 
 
-
 class TestOutputFormat:
     """Tests for OutputFormat enum."""
 

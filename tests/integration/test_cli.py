@@ -43,7 +43,6 @@ class TestLintCommand:
             assert result.exit_code == 0
             assert "No issues found" in result.output
 
-
     def test_lint_finds_missing_source_exclude(self) -> None:
         """Lint should detect missing source-exclude patterns."""
         with TemporaryDirectory() as tmp:
@@ -365,7 +364,6 @@ class TestCreateCommand:
 
 class TestUpdateCommand:
     """Integration tests for the update command."""
-
 
     def test_update_adds_existing_patterns(self) -> None:
         """Update should add source-exclude patterns only for artefacts that exist in the repo."""

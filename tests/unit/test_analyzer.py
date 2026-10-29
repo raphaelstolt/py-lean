@@ -506,5 +506,3 @@ class TestLoadConfig:
         doc = tomlkit.parse(content)
         config = load_config(manifest=doc, patterns=None)
         assert config.effective_patterns() == DEFAULT_SOURCE_EXCLUDE_PATTERNS
-
-

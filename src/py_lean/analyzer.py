@@ -218,9 +218,7 @@ def detect_missing_source_exclude(
             continue
 
         # Check if it's covered by any source-exclude pattern
-        covered = any(
-            _pattern_covers(pattern, ep) for ep in exclude_patterns
-        )
+        covered = any(_pattern_covers(pattern, ep) for ep in exclude_patterns)
         if not covered:
             issues.append(
                 Issue(

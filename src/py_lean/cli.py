@@ -33,6 +33,7 @@ def manifest_path_callback(ctx: typer.Context, value: str) -> Path:
 # Commands
 #
 
+
 @app.command("lint")
 def cmd_lint(
     manifest_path: Path = typer.Option(
@@ -272,6 +273,7 @@ def cmd_update(
 #
 # Helpers
 #
+
 
 def _print_issues(issues: list) -> None:
     """Print issues in a human-readable format."""
