@@ -38,6 +38,9 @@ Move the `[Unreleased]` section in `CHANGELOG.md` to a new versioned section:
 # Run all tests
 uv run pytest
 
+# Check source-exclude patterns
+uv run py-lean lint
+
 # Run linter
 uv run ruff check .
 
