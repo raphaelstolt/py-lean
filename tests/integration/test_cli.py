@@ -27,7 +27,7 @@ class TestLintCommand:
                     """
                     [build-system]
                     requires = ["uv_build"]
-                    build-backend = "uv_build.build"
+                    build-backend = "uv_build"
 
                     [project]
                     name = "test"
@@ -53,7 +53,7 @@ class TestLintCommand:
                     """
                     [build-system]
                     requires = ["uv_build"]
-                    build-backend = "uv_build.build"
+                    build-backend = "uv_build"
 
                     [project]
                     name = "test"
@@ -78,7 +78,7 @@ class TestLintCommand:
                     """
                     [build-system]
                     requires = ["uv_build"]
-                    build-backend = "uv_build.build"
+                    build-backend = "uv_build"
 
                     [project]
                     name = "test"
@@ -105,7 +105,7 @@ class TestLintCommand:
                     """
                     [build-system]
                     requires = ["uv_build"]
-                    build-backend = "uv_build.build"
+                    build-backend = "uv_build"
 
                     [project]
                     name = "test"
@@ -133,7 +133,7 @@ class TestLintCommand:
                     """
                     [build-system]
                     requires = ["uv_build"]
-                    build-backend = "uv_build.build"
+                    build-backend = "uv_build"
 
                     [project]
                     name = "test"
@@ -162,7 +162,7 @@ class TestLintCommand:
                     """
                     [build-system]
                     requires = ["uv_build"]
-                    build-backend = "uv_build.build"
+                    build-backend = "uv_build"
 
                     [project]
                     name = "test"
@@ -232,7 +232,7 @@ class TestCreateCommand:
                     """
                     [build-system]
                     requires = ["uv_build"]
-                    build-backend = "uv_build.build"
+                    build-backend = "uv_build"
 
                     [project]
                     name = "test"
@@ -263,7 +263,7 @@ class TestCreateCommand:
                     """
                     [build-system]
                     requires = ["uv_build"]
-                    build-backend = "uv_build.build"
+                    build-backend = "uv_build"
 
                     [project]
                     name = "test"
@@ -292,7 +292,7 @@ class TestCreateCommand:
                     """
                     [build-system]
                     requires = ["uv_build"]
-                    build-backend = "uv_build.build"
+                    build-backend = "uv_build"
 
                     [project]
                     name = "test"
@@ -318,7 +318,7 @@ class TestCreateCommand:
                     """
                     [build-system]
                     requires = ["uv_build"]
-                    build-backend = "uv_build.build"
+                    build-backend = "uv_build"
 
                     [project]
                     name = "test"
@@ -375,7 +375,7 @@ class TestUpdateCommand:
                     """
                     [build-system]
                     requires = ["uv_build"]
-                    build-backend = "uv_build.build"
+                    build-backend = "uv_build"
 
                     [project]
                     name = "test"
@@ -406,7 +406,7 @@ class TestUpdateCommand:
                     """
                     [build-system]
                     requires = ["uv_build"]
-                    build-backend = "uv_build.build"
+                    build-backend = "uv_build"
 
                     [project]
                     name = "test"
@@ -435,7 +435,7 @@ class TestUpdateCommand:
                     """
                     [build-system]
                     requires = ["uv_build"]
-                    build-backend = "uv_build.build"
+                    build-backend = "uv_build"
 
                     [project]
                     name = "test"
@@ -461,7 +461,7 @@ class TestUpdateCommand:
                     """
                     [build-system]
                     requires = ["uv_build"]
-                    build-backend = "uv_build.build"
+                    build-backend = "uv_build"
 
                     [project]
                     name = "test"

@@ -73,7 +73,7 @@ def cmd_lint(
             "py-lean requires the following in pyproject.toml:\n\n"
             "  [build-system]\n"
             '  requires = ["uv_build"]\n'
-            '  build-backend = "uv_build.build"',
+            '  build-backend = "uv_build"',
             err=True,
         )
         raise typer.Exit(1)
@@ -128,7 +128,7 @@ def cmd_create(
             "py-lean requires the following in pyproject.toml:\n\n"
             "  [build-system]\n"
             '  requires = ["uv_build"]\n'
-            '  build-backend = "uv_build.build"',
+            '  build-backend = "uv_build"',
             err=True,
         )
         raise typer.Exit(1)
@@ -215,7 +215,7 @@ def cmd_update(
             "py-lean requires the following in pyproject.toml:\n\n"
             "  [build-system]\n"
             '  requires = ["uv_build"]\n'
-            '  build-backend = "uv_build.build"',
+            '  build-backend = "uv_build"',
             err=True,
         )
         raise typer.Exit(1)

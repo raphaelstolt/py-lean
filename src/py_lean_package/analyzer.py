@@ -100,7 +100,7 @@ def check_build_system(manifest: tomlkit.TOMLDocument) -> bool:
     """Verify the project uses uv_build as its build backend.
 
     Checks for [build-system] with `requires` containing `uv_build` and
-    `build-backend` set to `uv_build.build`.
+    `build-backend` set to `uv_build`.
 
     Returns:
         True if the build system is correctly configured for uv_build.
@@ -110,7 +110,7 @@ def check_build_system(manifest: tomlkit.TOMLDocument) -> bool:
     backend = build_system.get("build-backend", "")
 
     has_uv_build_requires = any("uv_build" in str(r) for r in requires)
-    has_uv_build_backend = str(backend) == "uv_build.build"
+    has_uv_build_backend = str(backend) == "uv_build"
 
     return has_uv_build_requires and has_uv_build_backend
 

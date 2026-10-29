@@ -75,7 +75,7 @@ class TestCheckBuildSystem:
             """
             [build-system]
             requires = ["uv_build"]
-            build-backend = "uv_build.build"
+            build-backend = "uv_build"
             """
         )
         doc = tomlkit.parse(content)
@@ -125,7 +125,7 @@ class TestCheckBuildSystem:
         content = textwrap.dedent(
             """
             [build-system]
-            build-backend = "uv_build.build"
+            build-backend = "uv_build"
             """
         )
         doc = tomlkit.parse(content)
@@ -136,7 +136,7 @@ class TestCheckBuildSystem:
             """
             [build-system]
             requires = ["uv_build>=0.5.0"]
-            build-backend = "uv_build.build"
+            build-backend = "uv_build"
             """
         )
         doc = tomlkit.parse(content)
