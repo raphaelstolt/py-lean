@@ -11,6 +11,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 - `--patterns` option now accepts a single space-separated string (e.g., `-p "tests/ benchmarks/ docs/"`) instead of
 requiring repeated flags.
 
+### Fixed
+
+- Patterns are now normalized by stripping trailing slashes, so `tests/` and `tests` are treated identically
+across all commands and configuration sources.
+
 ## [0.1.1] - 2026-10-29
 
 ### Changed

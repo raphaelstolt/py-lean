@@ -11,6 +11,7 @@ import tomlkit
 from py_lean_package.analyzer import (
     _artifact_exists,
     _get_source_exclude_patterns,
+    _normalize_pattern,
     _pattern_covers,
     check_build_system,
     detect_missing_source_exclude,
@@ -25,6 +26,25 @@ from py_lean_package.models import DEFAULT_SOURCE_EXCLUDE_PATTERNS, LeanConfig
 def _gitignore_entries(root: Path) -> list[str]:
     """Helper: read gitignore entries from a test root."""
     return read_gitignore(root)
+
+
+class TestNormalizePattern:
+    """Tests for _normalize_pattern."""
+
+    def test_strips_trailing_slash(self) -> None:
+        assert _normalize_pattern("tests/") == "tests"
+
+    def test_strips_multiple_trailing_slashes(self) -> None:
+        assert _normalize_pattern("tests//") == "tests"
+
+    def test_no_change_without_trailing_slash(self) -> None:
+        assert _normalize_pattern("tests") == "tests"
+
+    def test_preserves_leading_slash(self) -> None:
+        assert _normalize_pattern("/tests/") == "/tests"
+
+    def test_glob_pattern(self) -> None:
+        assert _normalize_pattern("*.egg-info") == "*.egg-info"
 
 
 class TestLoadManifest:
@@ -172,6 +192,15 @@ class TestPatternCovers:
     def test_wildcard_match(self) -> None:
         assert _pattern_covers("*.egg-info", "*.egg-info") is True
 
+    def test_trailing_slash_on_pattern(self) -> None:
+        assert _pattern_covers("tests/", "tests") is True
+
+    def test_trailing_slash_on_exclude(self) -> None:
+        assert _pattern_covers("tests", "tests/") is True
+
+    def test_trailing_slash_on_both(self) -> None:
+        assert _pattern_covers("tests/", "tests/") is True
+
 
 class TestArtifactExists:
     """Tests for _artifact_exists."""
@@ -197,6 +226,12 @@ class TestArtifactExists:
         with TemporaryDirectory() as tmp:
             root = Path(tmp)
             assert _artifact_exists(root, "*.egg-info") is False
+
+    def test_trailing_slash_directory_exists(self) -> None:
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "tests").mkdir()
+            assert _artifact_exists(root, "tests/") is True
 
 
 class TestReadGitignore:
@@ -506,3 +541,23 @@ class TestLoadConfig:
         doc = tomlkit.parse(content)
         config = load_config(manifest=doc, patterns=None)
         assert config.effective_patterns() == DEFAULT_SOURCE_EXCLUDE_PATTERNS
+
+    def test_cli_patterns_normalize_trailing_slash(self) -> None:
+        """CLI patterns with trailing slashes should be normalized."""
+        config = load_config(manifest=None, patterns=["tests/", "docs/"])
+        assert config.effective_patterns() == ["tests", "docs"]
+
+    def test_source_exclude_normalizes_trailing_slash(self) -> None:
+        """Source-exclude patterns with trailing slashes should be normalized."""
+        content = textwrap.dedent(
+            """
+            [project]
+            name = "test"
+
+            [tool.uv.build-backend]
+            source-exclude = ["tests/", "docs/"]
+            """
+        )
+        doc = tomlkit.parse(content)
+        config = load_config(manifest=doc, patterns=None)
+        assert config.effective_patterns() == ["tests", "docs"]

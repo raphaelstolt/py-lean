@@ -115,6 +115,14 @@ def check_build_system(manifest: tomlkit.TOMLDocument) -> bool:
     return has_uv_build_requires and has_uv_build_backend
 
 
+def _normalize_pattern(pattern: str) -> str:
+    """Normalize a pattern by stripping trailing slashes.
+
+    Ensures that `tests/` and `tests` are treated identically throughout the codebase.
+    """
+    return pattern.rstrip("/")
+
+
 def load_config(
     manifest: tomlkit.TOMLDocument | None = None,
     patterns: list[str] | None = None,
@@ -136,14 +144,14 @@ def load_config(
 
     # If CLI patterns are provided, they take full precedence
     if patterns is not None:
-        config.patterns = patterns
+        config.patterns = [_normalize_pattern(p) for p in patterns]
         return config
 
     # Otherwise, try to load from tool.uv.build-backend.source-exclude
     if manifest is not None:
         source_exclude = _get_source_exclude_patterns(manifest)
         if source_exclude:
-            config.patterns = source_exclude
+            config.patterns = [_normalize_pattern(p) for p in source_exclude]
 
     # If neither CLI nor source-exclude provides patterns, effective_patterns()
     # will fall back to DEFAULT_SOURCE_EXCLUDE_PATTERNS
@@ -171,9 +179,13 @@ def _get_source_exclude_patterns(manifest: tomlkit.TOMLDocument) -> list[str]:
 def _pattern_covers(pattern: str, exclude_pattern: str) -> bool:
     """Check if a source-exclude pattern covers a given artifact pattern.
 
-    Both patterns are treated as glob patterns. The exclude_pattern must match
+    Both patterns are normalized (trailing slashes stripped) before comparison.
+    Patterns are treated as glob patterns. The exclude_pattern must match
     the artifact pattern or be a parent directory of it.
     """
+    pattern = _normalize_pattern(pattern)
+    exclude_pattern = _normalize_pattern(exclude_pattern)
+
     # Direct match
     if fnmatch.fnmatch(pattern, exclude_pattern):
         return True
@@ -237,7 +249,12 @@ def detect_missing_source_exclude(
 
 
 def _artifact_exists(project_root: Path, pattern: str) -> bool:
-    """Check if an artifact matching the pattern exists in the project root."""
+    """Check if an artifact matching the pattern exists in the project root.
+
+    Trailing slashes are stripped before checking, so `tests/` and `tests` are equivalent.
+    """
+    pattern = _normalize_pattern(pattern)
+
     # Handle glob patterns like *.egg-info, *.pyc, *.pyo
     if "*" in pattern:
         matches = list(project_root.glob(pattern))
