@@ -53,6 +53,10 @@ Install with `uv`:
 uv tool install py-lean-package
 ```
 
+> [!NOTE]
+> The PyPI package is named `py-lean-package` due to PyPI naming restrictions that prevent publishing packages with
+> names too similar to existing ones. The CLI command remains `py-lean`.
+
 Or install from source:
 
 ```bash
