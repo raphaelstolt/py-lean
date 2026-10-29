@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Changed
+
+- `--patterns` option now accepts a single space-separated string (e.g., `-p "tests/ benchmarks/ docs/"`) instead of
+requiring repeated flags.
+
 ## [0.1.1] - 2026-10-29
 
 ### Changed

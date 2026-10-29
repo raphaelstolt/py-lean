@@ -147,7 +147,7 @@ class TestLintCommand:
             (root / "docs").mkdir()
 
             # CLI patterns override source-exclude — only benchmarks is checked
-            result = runner.invoke(app, ["lint", "-m", str(manifest), "-p", "benchmarks"])
+            result = runner.invoke(app, ["lint", "-m", str(manifest), "-p", "benchmarks/"])
             # No benchmarks directory exists, so no issues
             assert result.exit_code == 0
             assert "No issues found" in result.output

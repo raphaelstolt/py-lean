@@ -78,7 +78,7 @@ Options:
 |------|-------------|
 | `-m, --manifest-path <PATH>` | Path to `pyproject.toml` (default: `pyproject.toml`) |
 | `--format <text\|json>` | Output format (default: `text`) |
-| `-p, --patterns <PATTERN>` | Artefact patterns to check, such as `tests/` |
+| `-p, --patterns <PATTERNS>` | Space-separated artefact patterns to check, e.g., `"tests/ benchmarks/"` |
 | `--dry-run` | Show what would be done without making changes |
 | `--diff` | Show a diff of the proposed changes |
 
@@ -92,7 +92,7 @@ py-lean lint --format json
 py-lean lint -m path/to/pyproject.toml
 
 # Check selected artefact patterns
-py-lean lint -p "tests/" -p "benchmarks/"
+py-lean lint -p "tests/ benchmarks/"
 ```
 
 ### Create
@@ -151,7 +151,7 @@ py-lean update
 Use `--patterns` to override the default patterns:
 
 ```bash
-py-lean lint -p "tests/" -p "benchmarks/"
+py-lean lint -p "tests/ benchmarks/"
 ```
 
 By default, `py-lean` checks a built-in set of common repository artefacts.

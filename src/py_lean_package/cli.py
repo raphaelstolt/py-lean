@@ -48,11 +48,11 @@ def cmd_lint(
         "--format",
         help="Output format: text or json.",
     ),
-    patterns: list[str] | None = typer.Option(
+    patterns: str | None = typer.Option(
         None,
         "-p",
         "--patterns",
-        help="Artefact patterns to check for source-exclude (e.g., tests).",
+        help="Space-separated artefact patterns to check for source-exclude (e.g., 'tests/ benchmarks/ docs/').",
     ),
     dry_run: bool = typer.Option(
         False,
@@ -77,7 +77,8 @@ def cmd_lint(
             err=True,
         )
         raise typer.Exit(1)
-    result = analyze(manifest_path, patterns)
+    pattern_list = patterns.split() if patterns else None
+    result = analyze(manifest_path, pattern_list)
 
     if format == OutputFormat.JSON:
         typer.echo(json.dumps(result.to_dict(), indent=2))
