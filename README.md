@@ -154,7 +154,24 @@ Use `--patterns` to override the default patterns:
 py-lean lint -p "tests/ benchmarks/"
 ```
 
-By default, `py-lean` checks a built-in set of common repository artefacts.
+### Default artefact patterns
+
+By default, `py-lean` checks for these 20 patterns:
+
+```
+tests/, docs/, dist/, build/, htmlcov/,
+.venv/, __pycache__/, .tox/, .mypy_cache/, .pytest_cache/, .github/,
+.idea/, .vscode/, .vs/, .ruff_cache/,
+*.egg-info, .DS_Store, *.pyc, *.pyo, .coverage
+```
+
+Note: `.git` is not included as it is automatically excluded by build backends.
+
+Override them with `--patterns`:
+
+```bash
+py-lean lint -p ".idea/ __pycache__/"
+```
 
 ## Development
 
