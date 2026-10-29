@@ -62,6 +62,7 @@ uv publish
 ### 6. Create a Git tag
 
 ```bash
-git tag -a v0.1.0 -m "dist: ship version 0.1.0"
+git commit -m 'dist: ship version 0.1.0'
+git tag v0.1.0
 git push origin v0.1.0
 ```
