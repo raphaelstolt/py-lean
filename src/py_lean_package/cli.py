@@ -9,9 +9,9 @@ from pathlib import Path
 import tomlkit
 import typer
 
-from py_lean import __version__
-from py_lean.analyzer import _get_source_exclude_patterns, analyze, check_build_system, load_manifest
-from py_lean.models import DEFAULT_SOURCE_EXCLUDE_PATTERNS, IssueType, OutputFormat
+from py_lean_package import __version__
+from py_lean_package.analyzer import _get_source_exclude_patterns, analyze, check_build_system, load_manifest
+from py_lean_package.models import DEFAULT_SOURCE_EXCLUDE_PATTERNS, IssueType, OutputFormat
 
 app = typer.Typer(
     name="py-lean",

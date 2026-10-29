@@ -1,6 +1,6 @@
 # Release Process
 
-This document describes how to release a new version of `py-lean`.
+This document describes how to release a new version of `py-lean-package`.
 
 ## Prerequisites
 
@@ -11,13 +11,13 @@ This document describes how to release a new version of `py-lean`.
 
 ### 1. Update version
 
-Update the version in `pyproject.toml` and `py_lean/__init__.py`:
+Update the version in `pyproject.toml` and `py_lean_package/__init__.py`:
 
 ```bash
 # Edit pyproject.toml
 # Change version = "X.Y.Z" to the new version
 
-# Edit py_lean/__init__.py
+# Edit py_lean_package/__init__.py
 # Change __version__ = "X.Y.Z" to the new version
 ```
 

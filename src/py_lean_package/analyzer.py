@@ -8,7 +8,7 @@ from pathlib import Path
 
 import tomlkit
 
-from py_lean.models import AnalysisResult, Issue, IssueType, LeanConfig
+from py_lean_package.models import AnalysisResult, Issue, IssueType, LeanConfig
 
 
 def read_gitignore(project_root: Path) -> list[str]:

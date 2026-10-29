@@ -6,11 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Changed
+
+- Rename package `py-lean` to `py-lean-package`.
+
 ## [0.1.0] - 2026-10-29
 
 ### Added
 
-- Initial release of `py-lean`.
+- Initial release of `py-lean-package`.
 - `lint` command: analyze projects for missing `source-exclude` patterns.
 - `create` command: add missing `source-exclude` patterns to `pyproject.toml`.
 - `update` command: automatically add missing `source-exclude` patterns to `pyproject.toml`.

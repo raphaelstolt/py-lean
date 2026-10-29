@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for your interest in contributing to `py-lean`.
+Thank you for your interest in contributing to `py-lean-package`.
 
 ## Code quality
 
@@ -21,7 +21,7 @@ uv run ruff format .
 
 ### Linting
 
-Check for common mistakes and improve Python idioms and the leanness of `py-lint`:
+Check for common mistakes and improve Python idioms and the leanness of `py-lean`:
 
 ```bash
 uv run ruff check .

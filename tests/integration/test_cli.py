@@ -9,7 +9,7 @@ from tempfile import TemporaryDirectory
 
 from typer.testing import CliRunner
 
-from py_lean.cli import app
+from py_lean_package.cli import app
 
 runner = CliRunner()
 

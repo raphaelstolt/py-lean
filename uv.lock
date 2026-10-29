@@ -170,8 +170,8 @@ wheels = [
 ]
 
 [[package]]
-name = "py-lean"
-version = "0.1.0"
+name = "py-lean-package"
+version = "0.1.1"
 source = { editable = "." }
 dependencies = [
     { name = "pydantic" },

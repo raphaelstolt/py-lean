@@ -3,7 +3,7 @@ requires = ["uv_build"]
 build-backend = "uv_build"
 
 [project]
-name = "py-lean"
+name = "py-lean-package"
 version = "0.1.0"
 description = "Detect and fix missing source-exclude patterns in Python projects."
 readme = "README.md"
@@ -19,7 +19,7 @@ dependencies = [
 ]
 
 [project.scripts]
-py-lean = "py_lean.cli:app"
+py-lean = "py_lean_package.cli:app"
 
 [dependency-groups]
 dev = [

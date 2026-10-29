@@ -50,7 +50,7 @@ source-distribution contents.
 Install with `uv`:
 
 ```bash
-uv tool install py-lean
+uv tool install py-lean-package
 ```
 
 Or install from source:

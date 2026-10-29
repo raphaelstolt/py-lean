@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from py_lean.models import (
+from py_lean_package.models import (
     DEFAULT_SOURCE_EXCLUDE_PATTERNS,
     AnalysisResult,
     Issue,

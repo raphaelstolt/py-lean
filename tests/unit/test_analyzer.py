@@ -8,7 +8,7 @@ from tempfile import TemporaryDirectory
 
 import tomlkit
 
-from py_lean.analyzer import (
+from py_lean_package.analyzer import (
     _artifact_exists,
     _get_source_exclude_patterns,
     _pattern_covers,
@@ -19,7 +19,7 @@ from py_lean.analyzer import (
     load_manifest,
     read_gitignore,
 )
-from py_lean.models import DEFAULT_SOURCE_EXCLUDE_PATTERNS, LeanConfig
+from py_lean_package.models import DEFAULT_SOURCE_EXCLUDE_PATTERNS, LeanConfig
 
 
 def _gitignore_entries(root: Path) -> list[str]:
