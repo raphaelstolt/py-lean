@@ -173,6 +173,20 @@ Override them with `--patterns`:
 py-lean lint -p ".idea/ __pycache__/"
 ```
 
+### CI integration
+
+Add `py-lean` to your CI pipeline to ensure that `source-exclude` patterns are kept up to date:
+
+```yaml
+- name: Install py-lean
+  run: uv tool install py-lean-package
+
+- name: Check source-exclude patterns
+  run: py-lean lint
+```
+
+Failing the build when patterns are missing prevents repository artefacts from ending up in published distributions.
+
 ## Development
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for development instructions.
