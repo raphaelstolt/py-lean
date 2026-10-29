@@ -41,6 +41,7 @@ source-exclude = [
     ".github/**",
     "tests/**",
     ".gitignore",
+    "all-qa-checks.py",
     "CHANGELOG.md",
     "RELEASE.md",
     "CONTRIBUTING.md",

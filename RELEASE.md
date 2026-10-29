@@ -32,21 +32,13 @@ Move the `[Unreleased]` section in `CHANGELOG.md` to a new versioned section:
 - ...
 ```
 
-### 3. Run tests and lint
+### 3. Run all checks
 
 ```bash
-# Run all tests
-uv run pytest
-
-# Check source-exclude patterns
-uv run py-lean lint
-
-# Run linter
-uv run ruff check .
-
-# Format check
-uv run ruff format --check .
+uv run python all-qa-checks.py
 ```
+
+This runs all tests, checks source-exclude patterns, and verifies lint and format in one command.
 
 ### 4. Build the package
 
