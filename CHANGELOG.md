@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.2.1] - 2026-10-30
+
 ### Fixed
 
 - `check_build_system` now only accepts `uv_build` as a valid build backend — the invalid `uv_build.build` variant has
