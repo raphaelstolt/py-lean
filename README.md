@@ -177,6 +177,15 @@ Override them with `--patterns`:
 py-lean lint -p ".idea/ __pycache__/"
 ```
 
+### TOML configuration files
+
+In addition to the default artefact patterns, `py-lean` automatically detects TOML configuration files at the project
+root (e.g., `.ruff.toml`, `mypy.toml`) and checks whether they are listed in `source-exclude`. `pyproject.toml` is always
+excluded from this check, as it is the main project file.
+
+TOML files covered by `.gitignore` are skipped. You can exclude all TOML configs at once by adding `*.toml` to
+`source-exclude`, or list individual files.
+
 ### CI integration
 
 Add `py-lean` to your CI pipeline to ensure that `source-exclude` patterns are kept up to date:

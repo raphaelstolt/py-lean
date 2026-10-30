@@ -15,6 +15,7 @@ from py_lean_package.analyzer import (
     _pattern_covers,
     check_build_system,
     detect_missing_source_exclude,
+    detect_toml_configs,
     is_gitignored,
     load_config,
     load_manifest,
@@ -561,3 +562,200 @@ class TestLoadConfig:
         doc = tomlkit.parse(content)
         config = load_config(manifest=doc, patterns=None)
         assert config.effective_patterns() == ["tests", "docs"]
+
+
+class TestDetectTomlConfigs:
+    """Tests for detect_toml_configs."""
+
+    def test_no_toml_files(self) -> None:
+        """No issues when no TOML files exist."""
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            manifest = root / "pyproject.toml"
+            manifest.write_text(
+                textwrap.dedent(
+                    """
+                    [project]
+                    name = "test"
+                    """
+                )
+            )
+            doc = load_manifest(manifest)
+            issues = detect_toml_configs(doc, root)
+            assert len(issues) == 0
+
+    def test_only_pyproject_toml(self) -> None:
+        """pyproject.toml should be ignored."""
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            manifest = root / "pyproject.toml"
+            manifest.write_text(
+                textwrap.dedent(
+                    """
+                    [project]
+                    name = "test"
+                    """
+                )
+            )
+            doc = load_manifest(manifest)
+            issues = detect_toml_configs(doc, root)
+            assert len(issues) == 0
+
+    def test_detects_single_toml_config(self) -> None:
+        """A single TOML config file should be reported."""
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            manifest = root / "pyproject.toml"
+            manifest.write_text(
+                textwrap.dedent(
+                    """
+                    [project]
+                    name = "test"
+                    """
+                )
+            )
+            (root / ".ruff.toml").write_text("line-length = 88\n")
+            doc = load_manifest(manifest)
+            issues = detect_toml_configs(doc, root)
+            assert len(issues) == 1
+            assert issues[0].subject == ".ruff.toml"
+
+    def test_detects_multiple_toml_configs(self) -> None:
+        """Multiple TOML config files should all be reported."""
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            manifest = root / "pyproject.toml"
+            manifest.write_text(
+                textwrap.dedent(
+                    """
+                    [project]
+                    name = "test"
+                    """
+                )
+            )
+            (root / ".ruff.toml").write_text("line-length = 88\n")
+            (root / ".mypy.toml").write_text("[mypy]\nstrict = true\n")
+            doc = load_manifest(manifest)
+            issues = detect_toml_configs(doc, root)
+            assert len(issues) == 2
+            subjects = [i.subject for i in issues]
+            assert ".ruff.toml" in subjects
+            assert ".mypy.toml" in subjects
+
+    def test_skips_excluded_toml_config(self) -> None:
+        """TOML configs already in source-exclude should be skipped."""
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            manifest = root / "pyproject.toml"
+            manifest.write_text(
+                textwrap.dedent(
+                    """
+                    [project]
+                    name = "test"
+
+                    [tool.uv.build-backend]
+                    source-exclude = [".ruff.toml"]
+                    """
+                )
+            )
+            (root / ".ruff.toml").write_text("line-length = 88\n")
+            doc = load_manifest(manifest)
+            issues = detect_toml_configs(doc, root)
+            assert len(issues) == 0
+
+    def test_skips_gitignored_toml_config(self) -> None:
+        """TOML configs covered by .gitignore should be skipped."""
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            manifest = root / "pyproject.toml"
+            manifest.write_text(
+                textwrap.dedent(
+                    """
+                    [project]
+                    name = "test"
+                    """
+                )
+            )
+            (root / ".ruff.toml").write_text("line-length = 88\n")
+            (root / ".gitignore").write_text(".ruff.toml\n")
+            doc = load_manifest(manifest)
+            gitignore = _gitignore_entries(root)
+            issues = detect_toml_configs(doc, root, gitignore)
+            assert len(issues) == 0
+
+    def test_glob_pattern_covers_toml_config(self) -> None:
+        """A glob pattern in source-exclude should cover TOML configs."""
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            manifest = root / "pyproject.toml"
+            manifest.write_text(
+                textwrap.dedent(
+                    """
+                    [project]
+                    name = "test"
+
+                    [tool.uv.build-backend]
+                    source-exclude = ["*.toml"]
+                    """
+                )
+            )
+            (root / ".ruff.toml").write_text("line-length = 88\n")
+            doc = load_manifest(manifest)
+            issues = detect_toml_configs(doc, root)
+            assert len(issues) == 0
+
+    def test_non_dotfile_toml(self) -> None:
+        """Non-dotfile TOML configs should also be detected."""
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            manifest = root / "pyproject.toml"
+            manifest.write_text(
+                textwrap.dedent(
+                    """
+                    [project]
+                    name = "test"
+                    """
+                )
+            )
+            (root / "ruff.toml").write_text("line-length = 88\n")
+            doc = load_manifest(manifest)
+            issues = detect_toml_configs(doc, root)
+            assert len(issues) == 1
+            assert issues[0].subject == "ruff.toml"
+
+    def test_skips_toml_directories(self) -> None:
+        """TOML directories should be skipped, only files are checked."""
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            manifest = root / "pyproject.toml"
+            manifest.write_text(
+                textwrap.dedent(
+                    """
+                    [project]
+                    name = "test"
+                    """
+                )
+            )
+            (root / "config.toml").mkdir()
+            doc = load_manifest(manifest)
+            issues = detect_toml_configs(doc, root)
+            assert len(issues) == 0
+
+    def test_toml_in_subdirectory_ignored(self) -> None:
+        """TOML files in subdirectories should be ignored."""
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            manifest = root / "pyproject.toml"
+            manifest.write_text(
+                textwrap.dedent(
+                    """
+                    [project]
+                    name = "test"
+                    """
+                )
+            )
+            (root / "subdir").mkdir()
+            (root / "subdir" / ".ruff.toml").write_text("line-length = 88\n")
+            doc = load_manifest(manifest)
+            issues = detect_toml_configs(doc, root)
+            assert len(issues) == 0

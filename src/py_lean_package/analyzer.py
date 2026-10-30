@@ -265,13 +265,68 @@ def _artifact_exists(project_root: Path, pattern: str) -> bool:
     return path.exists()
 
 
+def detect_toml_configs(
+    manifest: tomlkit.TOMLDocument,
+    project_root: Path,
+    gitignore_entries: list[str] | None = None,
+) -> list[Issue]:
+    """Detect TOML configuration files at the project root that are not in source-exclude.
+
+    Scans for `*.toml` files in the project root, excludes `pyproject.toml`,
+    and checks if each found file is covered by source-exclude patterns.
+    Files already covered by .gitignore entries are skipped.
+    """
+    if gitignore_entries is None:
+        gitignore_entries = []
+
+    issues: list[Issue] = []
+    exclude_patterns = _get_source_exclude_patterns(manifest)
+
+    # Find all .toml files at the project root (not in subdirectories)
+    toml_files = sorted(project_root.glob("*.toml"))
+
+    for toml_file in toml_files:
+        # Skip pyproject.toml — it's the main project file
+        if toml_file.name == "pyproject.toml":
+            continue
+
+        # Skip if not a file (e.g., directory)
+        if not toml_file.is_file():
+            continue
+
+        filename = toml_file.name
+
+        # Skip if already covered by .gitignore
+        if is_gitignored(filename, gitignore_entries):
+            continue
+
+        # Check if it's covered by any source-exclude pattern
+        covered = any(_pattern_covers(filename, ep) for ep in exclude_patterns)
+        if not covered:
+            issues.append(
+                Issue(
+                    issue_type=IssueType.MISSING_SOURCE_EXCLUDE,
+                    subject=filename,
+                    description=(
+                        f"TOML config file '{filename}' exists in the project root but is not "
+                        f"listed in tool.uv.build-backend.source-exclude."
+                    ),
+                    location="pyproject.toml",
+                    suggestion=f"Add '{filename}' to tool.uv.build-backend.source-exclude.",
+                )
+            )
+
+    return issues
+
+
 def analyze(
     manifest_path: Path,
     patterns: list[str] | None = None,
 ) -> AnalysisResult:
     """Run full analysis on a project.
 
-    Checks for missing source-exclude patterns for common repository artefacts.
+    Checks for missing source-exclude patterns for common repository artefacts
+    and TOML configuration files.
     Artefacts already covered by .gitignore (local or global) are skipped.
 
     Args:
@@ -292,5 +347,6 @@ def analyze(
 
     issues: list[Issue] = []
     issues.extend(detect_missing_source_exclude(manifest, project_root, config, gitignore_entries))
+    issues.extend(detect_toml_configs(manifest, project_root, gitignore_entries))
 
     return AnalysisResult(manifest_path=manifest_path, issues=issues)

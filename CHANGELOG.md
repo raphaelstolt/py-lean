@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [Unreleased]
+
+### Fixed
+
+- TOML configuration files at the project root (e.g. `.ruff.toml` or `mypy.toml`) are now detected as source-exclude
+candidates. `pyproject.toml` is always excluded from this check.
+
 ## [0.2.1] - 2026-10-30
 
 ### Fixed

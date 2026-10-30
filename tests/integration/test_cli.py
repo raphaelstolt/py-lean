@@ -504,6 +504,54 @@ class TestUpdateCommand:
             assert result.exit_code == 1
             assert "uv_build" in result.output
 
+    def test_lint_detects_toml_configs(self) -> None:
+        """Lint should detect TOML config files not in source-exclude."""
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            manifest = root / "pyproject.toml"
+            manifest.write_text(
+                textwrap.dedent(
+                    """
+                    [build-system]
+                    requires = ["uv_build"]
+                    build-backend = "uv_build"
+
+                    [project]
+                    name = "test"
+                    """
+                )
+            )
+            (root / ".ruff.toml").write_text("line-length = 88\n")
+
+            result = runner.invoke(app, ["lint", "-m", str(manifest)])
+            assert result.exit_code == 1
+            assert ".ruff.toml" in result.output
+
+    def test_update_adds_toml_configs(self) -> None:
+        """Update should add TOML config files to source-exclude."""
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            manifest = root / "pyproject.toml"
+            manifest.write_text(
+                textwrap.dedent(
+                    """
+                    [build-system]
+                    requires = ["uv_build"]
+                    build-backend = "uv_build"
+
+                    [project]
+                    name = "test"
+                    """
+                )
+            )
+            (root / ".ruff.toml").write_text("line-length = 88\n")
+
+            result = runner.invoke(app, ["update", "-m", str(manifest)])
+            assert result.exit_code == 0
+
+            content = manifest.read_text()
+            assert '".ruff.toml"' in content
+
 
 class TestVersion:
     """Test the version flag."""
