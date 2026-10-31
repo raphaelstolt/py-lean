@@ -25,6 +25,7 @@ py-lean = "py_lean_package.cli:app"
 dev = [
     "hypothesis>=6.170.13",
     "pytest>=9.2.0",
+    "python-semantic-release>=9.16.0",
     "ruff>=0.17.3",
 ]
 
@@ -42,6 +43,7 @@ source-exclude = [
     "tests/**",
     ".gitignore",
     "all-qa-checks.py",
+    "release.py",
     "CHANGELOG.md",
     "RELEASE.md",
     "CONTRIBUTING.md",
@@ -49,3 +51,12 @@ source-exclude = [
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.semantic_release]
+version_toml = ["pyproject.toml:project.version"]
+version_variables = ["src/py_lean_package/__init__.py:__version__"]
+branch = "main"
+build_command = "uv sync --frozen && uv build"
+
+[tool.semantic_release.changelog.default_templates]
+changelog_file = "CHANGELOG.md"
