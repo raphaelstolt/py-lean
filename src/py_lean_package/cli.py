@@ -84,7 +84,7 @@ def cmd_lint(
         typer.echo(json.dumps(result.to_dict(), indent=2))
     else:
         if result.is_clean:
-            typer.echo("✓ No issues found.")
+            typer.echo("✓ pyproject.toml source-exclude list is complete.")
         else:
             _print_issues(result.issues)
             typer.echo(f"\nFound {len(result.issues)} issue(s).", err=True)

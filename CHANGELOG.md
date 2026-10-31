@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Fixed
+
+- The success message for `py-lean lint` is now aligned with `cargo-lean`'s output.
+
 ## [0.2.2] - 2026-10-31
 
 ### Fixed

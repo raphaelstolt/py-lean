@@ -41,7 +41,7 @@ class TestLintCommand:
 
             result = runner.invoke(app, ["lint", "-m", str(manifest)])
             assert result.exit_code == 0
-            assert "No issues found" in result.output
+            assert "pyproject.toml source-exclude list is complete" in result.output
 
     def test_lint_finds_missing_source_exclude(self) -> None:
         """Lint should detect missing source-exclude patterns."""
@@ -121,7 +121,7 @@ class TestLintCommand:
             result = runner.invoke(app, ["lint", "-m", str(manifest)])
             # Both tests and docs are in source-exclude, so no issues
             assert result.exit_code == 0
-            assert "No issues found" in result.output
+            assert "pyproject.toml source-exclude list is complete" in result.output
 
     def test_lint_cli_patterns_override_source_exclude(self) -> None:
         """CLI --patterns should override source-exclude config."""
@@ -150,7 +150,7 @@ class TestLintCommand:
             result = runner.invoke(app, ["lint", "-m", str(manifest), "-p", "benchmarks/"])
             # No benchmarks directory exists, so no issues
             assert result.exit_code == 0
-            assert "No issues found" in result.output
+            assert "pyproject.toml source-exclude list is complete" in result.output
 
     def test_lint_json_output(self) -> None:
         """Lint should support JSON output."""
