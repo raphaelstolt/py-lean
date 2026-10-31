@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-10-31
+
 ### Fixed
 
 - TOML configuration files at the project root (e.g. `.ruff.toml` or `mypy.toml`) are now detected as source-exclude
