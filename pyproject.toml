@@ -4,7 +4,7 @@ build-backend = "uv_build"
 
 [project]
 name = "py-lean-package"
-version = "0.2.2"
+version = "0.2.3"
 description = "Detect and fix missing source-exclude patterns in Python projects."
 readme = "README.md"
 license = {text = "MIT"}
