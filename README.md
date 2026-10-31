@@ -60,8 +60,7 @@ uv tool install py-lean-package
 Or install from source:
 
 ```bash
-git clone https://github.com/raphaelstolt/py-lean.git
-cd py-lean
+git clone https://github.com/raphaelstolt/py-lean.git && cd py-lean
 uv sync
 uv run --project . py-lean --help
 ```
