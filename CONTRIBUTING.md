@@ -36,6 +36,16 @@ Run the full test suite:
 uv run pytest
 ```
 
+### All checks
+
+Run all quality checks (tests, lint, formatting, and source-exclude patterns) in one command:
+
+```bash
+uv run python all-qa-checks.py
+```
+
+This is useful before committing or opening a pull request to ensure everything passes.
+
 ## Pull requests
 
 Please open pull requests against the `main` branch from a dedicated feature branch. Use descriptive branch names that
